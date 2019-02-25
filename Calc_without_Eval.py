@@ -154,7 +154,7 @@ def eval_expr(expr):
     nested = to_nested(tokens)
     return eval_tokens(nested)
 	
-#--------------------------------------CALCULATOR---------------------------------
+#------------------------------------
 
 class CalculatorApp(App):
 	def build(self):
