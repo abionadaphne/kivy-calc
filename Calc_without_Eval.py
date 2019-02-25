@@ -43,7 +43,7 @@ NUM_MATCH = re.compile(
 
 
 #---------------------------
-class Token():  #This is not really useful but tuples could be less clear
+class Token():  
     def __init__(self, type_, info=None):
         self.type = type_
         self.info = info
@@ -77,7 +77,6 @@ def is_valid(tokens):
     if tokens == []:
         return False
 
-    #This sections tests if parentheses are correctly nested
     nesting = 0
     for token in tokens:
         if token.type == 'OPAREN':
@@ -96,7 +95,7 @@ def is_valid(tokens):
         possible_valid_pairs = []
         for valid_pair in VALID_PAIRS:
             possible_valid_pairs.append((curr_kind, next_kind) == valid_pair)
-            #Test if it's equal to a valid pair
+            
         if not any(possible_valid_pairs):
             return False
 
@@ -117,7 +116,7 @@ def to_nested(tokens):
                 elif tokens[index].type == 'CPAREN':
                     nesting -= 1
                 in_parens.append(tokens[index])
-            in_parens=in_parens[:-1]  #Remove final closing paren
+            in_parens=in_parens[:-1] 
             out.append(in_parens)
         else:
             out.append(tokens[index])
@@ -129,7 +128,7 @@ def eval_tokens(tokens):
     newTokens = []
     for item in tokens:
         if type(item) == list:
-          #Parenthesised expressions are lists of tokens
+          
             newTokens.append(Token('NUM', eval_tokens(item)))
         else:
             newTokens.append(item)
@@ -137,17 +136,17 @@ def eval_tokens(tokens):
     for ops_to_evaluate in ORDER_OF_OPERATIONS:
         newTokens = []
         while any([has_op(tokens, op) for op in ops_to_evaluate]):
-          #While any of the ops exists in the expression
+          
             for index, token in enumerate(tokens):
                 if token.type == 'OP' and token.info in ops_to_evaluate:
                     where = index
-                    func = OP_FUNCS[token.info] #Get a function for the operation
+                    func = OP_FUNCS[token.info] 
                     break
             fst, snd = tokens[where-1].info, tokens[where+1].info
             before, after = tokens[:where-1], tokens[where+2:]
             result = Token('NUM', func(fst, snd))
-            tokens = before+[result]+after  #Recombine everything
-    assert(len(tokens) == 1)  #Should always be true but for debugging it's useful
+            tokens = before+[result]+after  
+    assert(len(tokens) == 1)  
     assert(tokens[0].type == 'NUM')
     return tokens[0].info
 def eval_expr(expr):
