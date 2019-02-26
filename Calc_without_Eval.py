@@ -89,7 +89,7 @@ def is_valid(tokens):
         return False
 
     for index, _ in enumerate(tokens[:-1]):
-        #[:-1] because otherwise next wont exist on last token
+        
         curr, next_ = tokens[index], tokens[index+1]
         curr_kind, next_kind = curr.type, next_.type
         possible_valid_pairs = []
